@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "390117597780",
+    "project_id": "grabit-a459b",
+    "storage_bucket": "grabit-a459b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:390117597780:android:234028c0bea4525ae1c3c1",
+        "android_client_info": {
+          "package_name": "com.bookexchange"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_Gt7p8wSrPzWOfFzR1Sf97rtr5abJRiw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

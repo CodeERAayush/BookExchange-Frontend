@@ -4,13 +4,21 @@ import Parallax from '../../components/Parallax'
 import { Colors } from '../../constants/colors'
 import { useWindowDimensions } from "react-native";
 import { StatusBar } from 'native-base';
+import { useDispatch } from 'react-redux';
+import { setUserData } from '../../slices/UserDataSlice';
+import { getAsync, getAsyncJson } from '../../helpers';
 const Splash = ({navigation}) => {
     const { width, height } = useWindowDimensions();
+    const dispatch=useDispatch();
     useEffect(()=>{
-        setTimeout(()=>{
-            navigation.replace('Login')
-        },3000)
+        fetchDetails(); 
     },[])
+    const fetchDetails=async()=>{ 
+        const data=await getAsyncJson('UserData');
+    setTimeout(()=>{
+        data?dispatch(setUserData(data)):null;
+        data?navigation.replace('MyTabs'):navigation.replace('Login')
+    },2000)}
   return (
     <SafeAreaView style={styles?.container}>
         <StatusBar

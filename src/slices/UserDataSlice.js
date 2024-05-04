@@ -1,14 +1,15 @@
 import { createSlice} from "@reduxjs/toolkit"
 
 const userSlice = createSlice({
-  name: "message",
+  name: "user",
   initialState: {
     UserData: {}
   },
   reducers: {
     setUserData(state, action) {
-      console.log(action)
-      state.UserData = action.payload
+      const tempData={...state};
+      tempData['UserData']=action.payload;
+      return tempData;
     }
   }
 })

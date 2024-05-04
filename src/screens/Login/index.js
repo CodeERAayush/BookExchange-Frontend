@@ -1,5 +1,5 @@
-import { StyleSheet, View } from 'react-native'
-import React, { useState } from 'react'
+import { StyleSheet, View,PermissionsAndroid } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { Box, StatusBar, Text, VStack } from 'native-base'
 import { Colors } from '../../constants/colors'
 import FormInput from '../../components/cards/FormInput'
@@ -8,7 +8,14 @@ import UtilityBtn from '../../components/cards/Button'
 import { API } from '../../constants'
 import axios from 'axios'
 import { Fonts } from '../../../asset/fonts'
+import { setAsyncJson } from '../../helpers'
+import { useDispatch } from 'react-redux'
+import { setUserData } from '../../slices/UserDataSlice'
+import messaging from '@react-native-firebase/messaging'
+
 const Login = ({ navigation }) => {
+
+  const dispatch=useDispatch();
 
   const [formData,setFormData]=useState({
     email:'',
@@ -18,7 +25,7 @@ const Login = ({ navigation }) => {
   const validate=()=>{
 
   }
-
+ 
   const Login=()=>{
     console.log(formData)
     const params={
@@ -26,7 +33,11 @@ const Login = ({ navigation }) => {
       method:'post',
       data:formData
     }
-    axios(params).then(res=>console.log(res?.data)).catch((e)=>console.log(e))
+    axios(params).then(async res=>{
+      dispatch(setUserData(res?.data));
+      await setAsyncJson('UserData',res?.data);
+      navigation.replace('MyTabs')
+    }).catch((e)=>console.log(e))
   }
 
 

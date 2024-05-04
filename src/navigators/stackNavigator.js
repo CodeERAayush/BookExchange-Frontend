@@ -6,6 +6,8 @@ import Home from '../screens/HomeScreen'
 import HostelSign from '../screens/Hostel'
 import Profile from '../screens/Profile'
 import Splash from '../screens/SplashScreen'
+import BottomTabNavigator from './bottomNavigator'
+import Cart from '../screens/Cart'
 const StackNavigator = () => {
   const Stack=createStackNavigator()
     return (
@@ -13,9 +15,9 @@ const StackNavigator = () => {
       <Stack.Screen name="SplashScreen" component={Splash}/>
         <Stack.Screen name='Login' component={Login}/>
         <Stack.Screen name='SignUp' component={SignUp}/>
-        <Stack.Screen name='Home' component={Home}/>
         <Stack.Screen name='HostelSign' component={HostelSign}/>
-        <Stack.Screen name='Profile' component={Profile}/>
+        <Stack.Screen name='MyTabs' component={BottomTabNavigator}/>
+        <Stack.Screen name='Cart' component={Cart}/>
     </Stack.Navigator>
   )
 }
