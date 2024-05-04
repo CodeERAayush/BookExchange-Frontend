@@ -1,7 +1,5 @@
-```markdown
-# Grabit 
-## Why go anywhere, when it's in home!
-```
+# Grabit 🛒 
+
 Grabit is a React Native application designed to help students in hosel to buy or exchange things at ease.
 
 ## Technologies Used
