@@ -32,6 +32,7 @@ const SignUp = ({navigation}) => {
     picturePath: '',
     hostel:'',
     address: '',
+    phone:0,
   })
   const [NotificationId,setNotificationid]=useState('')
   const [loading,setLoading]=useState(false);
@@ -55,6 +56,7 @@ const SignUp = ({navigation}) => {
     data.append(`password`, formData?.password)
     data.append(`address`, formData?.address)
     data.append(`hostel`, formData?.hostel)
+    data.append(`phone`,formData?.phone)
     data.append(`picture`, {
         uri : image.uri,
         type: image.type,
@@ -188,7 +190,7 @@ const SignUp = ({navigation}) => {
     var options = {
 
       title: 'Select Image',
-
+      // selectionLimit:5,
       customButtons: [
 
         {
@@ -313,6 +315,14 @@ navigation={navigation}/>
           onChangeText={(value) => setFormData({ ...formData, lastName: value })}
           value={formData.lastName}
         />
+        <FormInput
+          isRequired={true}
+          label={'Last Name'}
+          placeholder={'Enter Your Phone Number'}
+          type='number'
+          onChangeText={(value) => setFormData({ ...formData,  phone: value })}
+          value={formData.lastName}
+        />
         <Box w={'85%'} alignSelf={'center'}>
             <Text style={styles?.label}>Address <Text style={{color:'red'}}>*</Text></Text>
             </Box>
@@ -364,6 +374,7 @@ navigation={navigation}/>
           isRequired={true}
           label={'Password'}
           placeholder={'Enter Your Password'}
+          type='password'
           helperText={'Please enter your password'}
           onChangeText={(value) => setFormData({ ...formData, password: value })}
           value={formData.email}
@@ -382,6 +393,7 @@ navigation={navigation}/>
           label={'Confirm Password'}
           placeholder={'Re-Enter Your Password'}
           helperText={'Please re-enter your password'}
+          type='password'
           onChangeText={(value) => setFormData({ ...formData, cnfPass: value })}
           value={formData.email}
         />

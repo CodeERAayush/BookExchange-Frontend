@@ -76,6 +76,7 @@ export default function BottomTabNavigator() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: styles.tabBar,
+        tabBarHideOnKeyboard: true
       }}
     >
       {TabArr.map((item, index) => {

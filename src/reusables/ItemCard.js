@@ -8,6 +8,7 @@ import Icon,{Icons} from '../../asset/Icons/Icons'
 import LottieView from 'lottie-react-native'
 import MakeFav from './MakeFav'
 import { API } from '../constants'
+import FastImage from 'react-native-fast-image'
 
 const ItemCard = ({ item,onPressCart,naviagtion,favou }) => {
     
@@ -15,6 +16,7 @@ const ItemCard = ({ item,onPressCart,naviagtion,favou }) => {
         <Pressable 
         key={item?._id}
         // onPress={()=>naviagtion.navigate("Product",{id:item?._id})}
+        onPress={()=>console.log(API.API_BASEURL+'/assets/'+item?.image[0])}
         style={styles?.card}>
 
 
@@ -28,7 +30,7 @@ const ItemCard = ({ item,onPressCart,naviagtion,favou }) => {
             <View style={styles.img_holder}>
               { item?.image.length>0
               ?
-              <Image
+              <FastImage
               source={{uri:API.API_BASEURL+'/assets/'+item?.image[0]}}
               style={[styles?.img,{width:'100%',height:'100%'}]}
               resizeMode='cover'
@@ -85,7 +87,8 @@ const styles = StyleSheet.create({
         overflow:'hidden'
     },
     img: {
-        height: heightPercentageToDP(10)
+        height: heightPercentageToDP(10),
+        tintColor:Colors?.Black
     },
     data_holder:{
         marginTop:heightPercentageToDP(3),

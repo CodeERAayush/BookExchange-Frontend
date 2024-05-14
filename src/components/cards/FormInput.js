@@ -4,7 +4,7 @@ import { Center, FormControl, Input } from 'native-base'
 import { Colors } from '../../constants/colors'
 import { Fonts } from '../../../asset/fonts'
 
-const FormInput = ({isRequired,label,placeholder,helperText,error,onChangeText=()=>{},value}) => {
+const FormInput = ({isRequired,label,placeholder,helperText,error,onChangeText=()=>{},value,type='text',keyboardType='default'}) => {
   return (
     <Center mt={2}>
     <FormControl 
@@ -14,7 +14,7 @@ const FormInput = ({isRequired,label,placeholder,helperText,error,onChangeText=(
       bold: true,
       color:Colors?.Black,
     }}>{label}</FormControl.Label>
-      <Input _focus={{backgroundColor:'transparent'}} focusOutlineColor={Colors?.Primary} placeholder={placeholder} onChangeText={value => onChangeText(value)} />
+      <Input _focus={{backgroundColor:'transparent'}} type={type} focusOutlineColor={Colors?.Primary} keyboardType={keyboardType} placeholder={placeholder} value={value} onChangeText={value => onChangeText(value)} />
 
      { helperText?<FormControl.HelperText _text={{
       fontSize: 'xs'

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View,Image, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View,Image, TouchableOpacity, Linking } from 'react-native'
 import React, { memo } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { Images } from '../../asset/images'
@@ -41,7 +41,7 @@ const CartItemCard = ({item,navigation}) => {
           name={"message1"}
           btn_style={{backgroundColor:Colors?.Primary,elevation:5, height:hp(4),width:hp(4)}}
           style={{color:Colors?.White}}
-          onPress={()=>console.log(item)}
+          onPress={()=>Linking.openURL(`sms:${item?.user?.phone}`)}
           // onPress={()=>item?.quantity<=1?dispatch(remove_item(item?.id)):dispatch(decrease_quantity(item?.id))}
           type={Icons.AntDesign}
           size={20}
@@ -52,7 +52,7 @@ const CartItemCard = ({item,navigation}) => {
           size={20}
           btn_style={{backgroundColor:Colors?.darkMagicBlue,elevation:5, height:hp(4),width:hp(4) }}
           style={{color:Colors?.White}}
-          // onPress={()=>dispatch(increase_quantity(item?.id))}
+          onPress={()=>Linking.openURL(`tel:${item?.user?.phone}`)}
 
           />
           <CustomBtn

@@ -82,7 +82,8 @@ const Login = ({ navigation }) => {
           placeholder={'Enter Your Password'}
           helperText={'Please enter your password'}
           onChangeText={(value)=>setFormData({...formData,password:value})}
-          value={formData.email}
+          value={formData.password}
+          type='password'
           />
           <UtilityBtn
           text={'Submit'}

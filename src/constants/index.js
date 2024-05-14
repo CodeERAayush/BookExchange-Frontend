@@ -1,6 +1,6 @@
 export const API={
     // API_BASEURL:'https://bookexchange.onrender.com',
-    API_BASEURL:'http://192.168.104.222:4002',
+    API_BASEURL:'http://192.168.208.222:4002',
     HOSETL_REGISTRATION:'auth/register_hostel',
     REGISTER:'auth/register',
     LOGIN:'bookApp/login',

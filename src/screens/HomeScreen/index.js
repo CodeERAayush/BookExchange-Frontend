@@ -13,7 +13,7 @@ import { Colors } from '../../constants/colors'
 import HeroSection from '../../components/HeroSection'
 import { API } from '../../constants'
 import { measure } from 'react-native-reanimated'
-import axios from 'axios'
+import axios, { all } from 'axios'
 import { addAllBookData, addLatestBookData, setAllBookData } from '../../slices/ItemsSlice'
 import ItemCard from '../../reusables/ItemCard'
 import Carousel from 'react-native-reanimated-carousel'
@@ -21,6 +21,7 @@ import { heightPercentageToDP,widthPercentageToDP,heightPercentageToDP as hp , w
 import { Fonts } from '../../../asset/fonts'
 import { add_item } from '../../slices/CartSlice'
 import messaging from '@react-native-firebase/messaging'
+import ItemRenderCard from '../../components/cards/ItemRenderCard'
 const Home = ({navigation}) => {
   const {UserData} = useSelector(state=>state.UserData);
   const {allBooks,latestBooks} = useSelector(state=>state.Items)
@@ -43,6 +44,11 @@ const Home = ({navigation}) => {
     }).catch(e=>console.log(e))
     .finally(()=>setRefreshing(false))
   }
+
+  const renderItem=useCallback((item,index)=>(<ItemRenderCard
+  item={item}
+  key={index}
+  />),[allBooks])
 
  const getLatestBooks=()=>{
     const params={
@@ -81,6 +87,7 @@ const Home = ({navigation}) => {
     backgroundColor={Colors?.magicBlue}
     barStyle={'light-content'}
     />
+    {/* {console.log(UserData?.token)} */}
     <HeroSection
     navigation={navigation}
     />
@@ -103,32 +110,7 @@ const Home = ({navigation}) => {
           parallaxScrollingOffset: 50,
         }}
       renderItem={({ item,index }) => (
-          <View
-              style={{
-                  flex: 1,
-                  // borderWidth: 1,
-                  backgroundColor:Colors?.White,
-                  borderRadius:widthPercentageToDP(2),
-                  justifyContent: 'center',
-                  elevation:5,
-                  overflow:'hidden'
-              }}
-          >
-            <Image
-            // item?.image[0]
-            source={{uri:`${API.API_BASEURL}/assets/${item?.image[0]}`}}
-            style={{height:'100%',width:'100%'}}
-            />
-            <View style={{position:'absolute',right:widthPercentageToDP(5),top:5,opacity:0.6}}>
-              <Box bgColor={Colors?.DarkGrey} paddingX={5} alignItems={'center'} justifyContent={'center'} rounded={5} >
-                <Text style={{fontSize:24,color:Colors?.White,fontFamily:Fonts?.Medium}}>{item?.name}</Text>
-              </Box>
-              <Box bgColor={Colors?.DarkGrey} paddingX={2} mt={0.4} alignItems={'center'} justifyContent={'center'} paddingY={2} rounded={5} >
-                <Text style={{fontSize:16,color:Colors?.White,fontFamily:Fonts?.Medium}}>Condition: {item?.condition}</Text>
-              </Box>
-            </View>
-          </View>
-          
+         renderItem(item,index)
       )}/>
       
       </View>
