@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   card:{
     width:wp(90),
     alignSelf:'center',
-    height:hp(7),
+    height:hp(10),
     flexDirection:'row',
     alignItems:'center',
   },

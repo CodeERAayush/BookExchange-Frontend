@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, StatusBar, FlatList, Image, RefreshControlComponent,ToastAndroid,Alert } from 'react-native'
+import { StyleSheet, Text, View, StatusBar, FlatList, Image, RefreshControlComponent,ToastAndroid,Alert,Pressable } from 'react-native'
 import React from 'react'
 import { Box} from 'native-base'
 import { Colors } from '../../constants/colors'
@@ -7,9 +7,10 @@ import { heightPercentageToDP,widthPercentageToDP,heightPercentageToDP as hp , w
 import { Fonts } from '../../../asset/fonts'
 import FastImage from 'react-native-fast-image'
 
-const ItemRenderCard = ({item}) => {
+const ItemRenderCard = ({item,navigation}) => {
   return (
-    <View
+    <Pressable
+    onPress={()=>navigation.navigate("Product",{id:item?._id})}
     style={{
         flex: 1,
         // borderWidth: 1,
@@ -33,7 +34,7 @@ const ItemRenderCard = ({item}) => {
       <Text allowFontScaling={false} style={{fontSize:16,color:Colors?.White,fontFamily:Fonts?.Medium}}>{item?.name}</Text>
     </Box>
   </View>
-</View>
+</Pressable>
   )
 }
 

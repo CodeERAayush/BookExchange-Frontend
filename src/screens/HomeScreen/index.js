@@ -48,6 +48,7 @@ const Home = ({navigation}) => {
   const renderItem=useCallback((item,index)=>(<ItemRenderCard
   item={item}
   key={index}
+  navigation={navigation}
   />),[allBooks])
 
  const getLatestBooks=()=>{
