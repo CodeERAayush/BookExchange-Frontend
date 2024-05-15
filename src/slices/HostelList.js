@@ -7,7 +7,6 @@ const HostelSlice = createSlice({
   },
   reducers: {
     setHostelList(state, action) {
-      console.log(action)
       let tempHostels={...state}
       const data = action.payload.map(hostel => ({
         label: hostel.hostelName,

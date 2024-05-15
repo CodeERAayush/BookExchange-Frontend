@@ -20,13 +20,13 @@ const Header = ({navigation,heading,dontShowCart,dontShowBack}) => {
             size={20}
             onPress={() => navigation.goBack()}
           />}
-        {heading?  <Text style={{marginLeft:wp(2),color:Colors?.Black,fontFamily:Fonts?.Regular,fontSize:wp(4.5)}}>{heading}</Text>:null}
+        {heading?  <Text allowFontScaling={false} style={{marginLeft:wp(2),color:Colors?.Black,fontFamily:Fonts?.Regular,fontSize:wp(4.5)}}>{heading}</Text>:null}
           </Box>
         {dontShowCart?null:  <>
           <TouchableOpacity
             onPress={() => navigation.navigate("Cart")}
             style={styles.notification}>
-            <Text style={styles.notification_text}>
+            <Text allowFontScaling={false} style={styles.notification_text}>
               {CartItems?.length}
             </Text>
           </TouchableOpacity>

@@ -64,7 +64,6 @@ const SignUp = ({navigation}) => {
     })
     data.append(`picturePath`, formData?.picturePath)
     data.append(`NotificationId`, NotificationId)
-    console.log('pressed',data)
     const params = {
       url: `${API.API_BASEURL}/${API.REGISTER}`,
       method: 'post',
@@ -100,7 +99,6 @@ const SignUp = ({navigation}) => {
         // console.log(granted)
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
       const token = await messaging().getToken();
-      console.log(token)
       setNotificationid(token)
     } else {
       // User decline
@@ -259,7 +257,7 @@ navigation={navigation}/>
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{backgroundColor:'white',flex:1}}>
       <Box mx='5%' >
-        <Text fontSize={{
+        <Text allowFontScaling={false} fontSize={{
           base: "50px",
           md: "60px",
           lg: "70px"
@@ -267,7 +265,7 @@ navigation={navigation}/>
           // bold
           fontFamily={Fonts.Regular}
           color={Colors.Black} letterSpacing='2xl'>GRABit</Text>
-        <Text fontSize={{
+        <Text allowFontScaling={false} fontSize={{
           base: "20px",
           md: "60px",
           lg: "70px"
@@ -298,7 +296,7 @@ navigation={navigation}/>
             size={35}
             color={Colors?.LightGrey}
           />
-          <Text mt={1} color={'gray.300'}>Select Profile Image</Text></>}
+          <Text allowFontScaling={false} mt={1} color={'gray.300'}>Select Profile Image</Text></>}
         </Pressable>
 
         <FormInput
@@ -317,20 +315,21 @@ navigation={navigation}/>
         />
         <FormInput
           isRequired={true}
-          label={'Last Name'}
+          label={'Phone Number'}
           placeholder={'Enter Your Phone Number'}
           type='number'
           onChangeText={(value) => setFormData({ ...formData,  phone: value })}
-          value={formData.lastName}
+          value={formData.phone}
         />
         <Box w={'85%'} alignSelf={'center'}>
-            <Text style={styles?.label}>Address <Text style={{color:'red'}}>*</Text></Text>
+            <Text allowFontScaling={false} style={styles?.label}>Address <Text allowFontScaling={false} style={{color:'red'}}>*</Text></Text>
             </Box>
           <TextArea
+          value={formData?.address}
             onChangeText={(value) => setFormData({ ...formData, address: value })}
             h={20} placeholder="Enter Your Address" w="85%" alignSelf={'center'} mt={1}/>
             <Box w={'85%'} alignSelf={'center'}>
-            <Text style={styles?.label}>Select Your Hostel <Text style={{color:'red'}}>*</Text></Text>
+            <Text allowFontScaling={false} style={styles?.label}>Select Your Hostel <Text allowFontScaling={false} style={{color:'red'}}>*</Text></Text>
             </Box>
             <Dropdown
         style={styles.dropdown}
@@ -358,7 +357,7 @@ navigation={navigation}/>
         //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
         // )}
       />
-      <Text 
+      <Text allowFontScaling={false} 
       onPress={()=>navigation.navigate('HostelSign')}
       style={styles?.label_text}>Hostel Not Found? Add your hostel (Click here)</Text>
 
@@ -377,7 +376,7 @@ navigation={navigation}/>
           type='password'
           helperText={'Please enter your password'}
           onChangeText={(value) => setFormData({ ...formData, password: value })}
-          value={formData.email}
+          value={formData.password}
         />
         {/* <FormInput
           isRequired={true}
@@ -395,7 +394,7 @@ navigation={navigation}/>
           helperText={'Please re-enter your password'}
           type='password'
           onChangeText={(value) => setFormData({ ...formData, cnfPass: value })}
-          value={formData.email}
+          value={formData.cnfPass}
         />
         <UtilityBtn
           text={'Submit'}
@@ -429,7 +428,7 @@ loading={loading}
                 setModalVisible(false)
                 requestCameraPermission()
               }}>
-              <Text style={styles.textStyle}>Camera</Text>
+              <Text allowFontScaling={false} style={styles.textStyle}>Camera</Text>
             </Pressable>
             <View
               style={{ backgroundColor: Colors.LightGrey, height: 2, width: '95%', alignSelf: 'center' }}
@@ -441,7 +440,7 @@ loading={loading}
                 selectFile()
               }}
             >
-              <Text style={styles.textStyle}>Gallery</Text>
+              <Text allowFontScaling={false} style={styles.textStyle}>Gallery</Text>
             </Pressable>
           </View>
         </Pressable>

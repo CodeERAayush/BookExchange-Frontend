@@ -27,10 +27,10 @@ const ItemRenderCard = ({item}) => {
   />
   <View style={{position:'absolute',right:widthPercentageToDP(5),top:5,opacity:0.6}}>
     <Box bgColor={Colors?.DarkGrey} paddingX={5} alignItems={'center'} justifyContent={'center'} rounded={5} >
-      <Text style={{fontSize:24,color:Colors?.White,fontFamily:Fonts?.Medium}}>Price: {item?.price}</Text>
+      <Text allowFontScaling={false} style={{fontSize:24,color:Colors?.White,fontFamily:Fonts?.Medium}}>Price: {item?.price}</Text>
     </Box>
     <Box bgColor={Colors?.DarkGrey} paddingX={2} mt={0.4} alignItems={'center'} justifyContent={'center'} paddingY={2} rounded={5} >
-      <Text style={{fontSize:16,color:Colors?.White,fontFamily:Fonts?.Medium}}>{item?.name}</Text>
+      <Text allowFontScaling={false} style={{fontSize:16,color:Colors?.White,fontFamily:Fonts?.Medium}}>{item?.name}</Text>
     </Box>
   </View>
 </View>

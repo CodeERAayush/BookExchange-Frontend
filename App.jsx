@@ -10,10 +10,10 @@ import messaging from '@react-native-firebase/messaging'
 import notifee,{AndroidImportance} from '@notifee/react-native';
 import { Colors } from './src/constants/colors'
 const App = () => {
-  // PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+  PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
   useEffect(()=>{
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-     console.log('A new FCM message arrived!', JSON.stringify(remoteMessage?.notification?.android));
+    //  console.log('A new FCM message arrived!', JSON.stringify(remoteMessage?.notification?.android));
       await notifee.requestPermission()
       // console.log(perm)
       const channelId = await notifee.createChannel({

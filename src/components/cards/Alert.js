@@ -11,7 +11,7 @@ const ShowAlert = ({type,heading,content,closeAlert=()=>{}}) => {
         <HStack flexShrink={1} space={2} alignItems="center" justifyContent="space-between">
           <HStack flexShrink={1} space={2} alignItems="center">
             <Alert.Icon />
-            <Text fontSize="md" fontWeight="medium" color="coolGray.800">
+            <Text allowFontScaling={false} fontSize="md" fontWeight="medium" color="coolGray.800">
               {heading}
             </Text>
           </HStack>

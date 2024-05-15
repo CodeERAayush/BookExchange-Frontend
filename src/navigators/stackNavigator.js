@@ -8,6 +8,7 @@ import Profile from '../screens/Profile'
 import Splash from '../screens/SplashScreen'
 import BottomTabNavigator from './bottomNavigator'
 import Cart from '../screens/Cart'
+import ProductDetailScreen from '../screens/RenderItemScreen'
 const StackNavigator = () => {
   const Stack=createStackNavigator()
     return (
@@ -18,6 +19,7 @@ const StackNavigator = () => {
         <Stack.Screen name='HostelSign' component={HostelSign}/>
         <Stack.Screen name='MyTabs' component={BottomTabNavigator}/>
         <Stack.Screen name='Cart' component={Cart}/>
+        <Stack.Screen name='Product' component={ProductDetailScreen}/>
     </Stack.Navigator>
   )
 }

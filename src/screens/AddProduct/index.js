@@ -49,6 +49,7 @@ const AddProduct = ({navigation}) => {
     data.append(`category`, formData?.category)
     data.append(`hostel_id`, formData?.hostel_id)
     data.append(`price`,formData?.price)
+    data.append(`condition`,formData?.condition)
     picture.forEach(image=> {
       data.append(`picture`,{
         uri : image.uri,
@@ -65,7 +66,7 @@ const AddProduct = ({navigation}) => {
 
       data.append(`image`, name)
     })
-    console.log('pressed',JSON.stringify(data))
+    // console.log('pressed',JSON.stringify(data))
     const params = {
       url: `${API.API_BASEURL}/${API.ADD_BOOK}`,
       method: 'post',
@@ -93,7 +94,7 @@ const AddProduct = ({navigation}) => {
       showSuccess('SuccessFully Registered!')
       // navigation.replace("HomeScreen")
     }).catch((e) => {
-      console.log(e)
+      // console.log(e)
       showError("error in adding product")
     })
     .finally(()=>setLoading(false))
@@ -195,7 +196,7 @@ onPress={()=>selectFile()}
             size={35}
             color={Colors?.LightGrey}
           />
-          <Text mt={1} color={'gray.300'}>Select Profile Image</Text></>}
+          <Text allowFontScaling={false} mt={1} color={'gray.300'}>Select Profile Image</Text></>}
         </Pressable>
     <ScrollView>
       <FormInput
@@ -207,7 +208,7 @@ onPress={()=>selectFile()}
       value={formData?.name}
       />
       <Box w={'85%'} mt={1} alignSelf={'center'}>
-      <Text style={styles?.label}>Select Category <Text style={{color:'red'}}>*</Text></Text>
+      <Text allowFontScaling={false} style={styles?.label}>Select Category <Text allowFontScaling={false} style={{color:'red'}}>*</Text></Text>
       </Box>
       <Dropdown
   style={styles.dropdown}
@@ -276,7 +277,7 @@ color:Colors?.Black
       />
 
 <Box w={'85%'} alignSelf={'center'}>
-            <Text style={styles?.label}>Product Description<Text style={{color:'red'}}>*</Text></Text>
+            <Text allowFontScaling={false} style={styles?.label}>Product Description<Text allowFontScaling={false} style={{color:'red'}}>*</Text></Text>
             </Box>
           <TextArea
           value={formData?.description}

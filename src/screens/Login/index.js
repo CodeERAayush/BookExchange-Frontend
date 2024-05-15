@@ -27,7 +27,6 @@ const Login = ({ navigation }) => {
   }
  
   const Login=()=>{
-    console.log(formData)
     const params={
       url:`${API.API_BASEURL}/${API.LOGIN}`,
       method:'post',
@@ -48,7 +47,7 @@ const Login = ({ navigation }) => {
         barStyle={'dark-content'}
       />
       <Box mx='5%' >
-      <Text fontSize={{
+      <Text allowFontScaling={false} fontSize={{
         base: "50px",
         md: "60px",
         lg: "70px"
@@ -56,7 +55,7 @@ const Login = ({ navigation }) => {
       // bold
       fontFamily={Fonts.Regular}
         color={Colors.Black} mt="50px" letterSpacing='2xl'>GRABit</Text>
-      <Text fontSize={{
+      <Text allowFontScaling={false} fontSize={{
         base: "20px",
         md: "60px",
         lg: "70px"
@@ -90,7 +89,7 @@ const Login = ({ navigation }) => {
           onSubmit={()=>Login()}
           customStyle={{alignSelf:'center'}}
           />
-          <Text 
+          <Text allowFontScaling={false} 
           onPress={()=>navigation.navigate('SignUp')}
           color='blue.600' mt='3' textAlign={'center'} >Didn't have an account? Signup!</Text>
         </VStack>

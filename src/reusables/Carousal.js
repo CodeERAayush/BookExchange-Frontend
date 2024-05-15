@@ -2,7 +2,9 @@ import { Image, StyleSheet, Text, View } from 'react-native'
 import React, { useCallback, useState } from 'react'
 import { FlatList } from 'react-native-gesture-handler'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { Colors } from '../constants/Colors'
+import { Colors } from '../constants/colors'
+import { API } from '../constants'
+import FastImage from 'react-native-fast-image'
 
 const Carousal = ({ images }) => {
 
@@ -23,11 +25,12 @@ const Carousal = ({ images }) => {
                 pagingEnabled
                 windowSize={1}
                 onViewableItemsChanged={onViewableItemsChanged}
-                renderItem={({ item, index }) => <Image
-                    source={{ uri: item }}
+                renderItem={({ item, index }) => {
+                return<FastImage
+                    source={{ uri: API.API_BASEURL+'/assets/'+item }}
                     style={{ height: hp(25), width: wp(90) }}
                     resizeMode='contain'
-                />}
+                />}}
             />
             {images?.length > 1 ?
                 <View style={styles?.locator}>

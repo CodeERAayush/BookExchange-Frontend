@@ -73,7 +73,7 @@ const Cart = ({navigation}) => {
         <TouchableOpacity 
         disabled={!CartItems?.length}
         style={[styles?.checkout_btn,{backgroundColor:CartItems?.length?Colors?.Secondary:Colors?.Primary}]}>
-          <Text style={styles?.checkout_text}>Proceed To Checkout</Text>
+          <Text allowFontScaling={false} style={styles?.checkout_text}>Proceed To Checkout</Text>
         </TouchableOpacity>
     </View> */}
     </View>

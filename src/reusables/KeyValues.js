@@ -7,8 +7,8 @@ import { Colors } from '../constants/colors'
 const KeyValues = ({keyy,value}) => {
   return (
     <View style={styles?.card}>
-    <Text style={styles?.key}>{keyy}</Text>
-    <Text style={styles?.value}>{value}</Text>
+    <Text allowFontScaling={false} style={styles?.key}>{keyy}</Text>
+    <Text allowFontScaling={false} style={styles?.value}>{value}</Text>
   </View>
   )
 }

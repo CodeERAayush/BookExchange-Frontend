@@ -13,5 +13,6 @@ export const API={
     GET_BOOKS_HOSTELWISE:'bookApp/get_books_hostelwise',
     HOSTELWISE_USER:'bookApp/users_hostelwise',
     USER_DETAILS:'bookApp/specific_user',
-    HOSTEL_LIST:'get_all_hostels'
+    HOSTEL_LIST:'get_all_hostels',
+    GET_PRODUCT_DETAIL:'bookApp/getBookDetail'
 }

@@ -19,11 +19,11 @@ const HeroSection = ({navigation}) => {
     style={styles.top_section}>
         <View style={styles.top_section_top}>
           <View style={styles.utilites}>
-            <Text style={styles.greet_text}>Hey, {UserData?.user?.firstName}</Text>
+            <Text allowFontScaling={false} style={styles.greet_text}>Hey, {UserData?.user?.firstName}</Text>
             <TouchableOpacity 
             onPress={()=>navigation.navigate("Cart")}
             style={styles.notification}>
-              <Text style={styles.notification_text}>
+              <Text allowFontScaling={false} style={styles.notification_text}>
                 {CartItems?.length}
               </Text>
             </TouchableOpacity>

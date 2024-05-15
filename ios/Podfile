@@ -51,5 +51,9 @@ target 'BookExchange' do
       config[:reactNativePath],
       :mac_catalyst_enabled => false
     )
+    target.build_configurations.each do |build_configuration|
+      build_configuration.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = 'arm64 i386'
   end
+  end
+ 
 end

@@ -15,8 +15,8 @@ const ItemCard = ({ item,onPressCart,naviagtion,favou }) => {
     return (
         <Pressable 
         key={item?._id}
-        // onPress={()=>naviagtion.navigate("Product",{id:item?._id})}
-        onPress={()=>console.log(API.API_BASEURL+'/assets/'+item?.image[0])}
+        onPress={()=>naviagtion.navigate("Product",{id:item?._id})}
+        // onPress={()=>console.log(API.API_BASEURL+'/assets/'+item?.image[0])}
         style={styles?.card}>
 
 
@@ -44,7 +44,7 @@ const ItemCard = ({ item,onPressCart,naviagtion,favou }) => {
             </View>
             <View style={styles.data_holder}>
                 <View style={styles.heading_holder}>
-                    <Text style={styles.price_text}>{item?.name?.length>15?item?.name.slice(0,15)+"...":item?.name}</Text>
+                    <Text allowFontScaling={false} style={styles.price_text}>{item?.price} ₹</Text>
                     <TouchableOpacity
                     onPress={()=>onPressCart(item)}
                     >
@@ -54,8 +54,8 @@ const ItemCard = ({ item,onPressCart,naviagtion,favou }) => {
                     />
                     </TouchableOpacity>
                 </View>
-                <Text style={styles.title}>
-                    {item?.condition}
+                <Text allowFontScaling={false} style={styles.title}>
+                {item?.name?.length>15?item?.name.slice(0,15)+"...":item?.name}
                 </Text>
             </View>
         </Pressable>
@@ -104,7 +104,8 @@ const styles = StyleSheet.create({
         color:Colors?.Black,
         fontFamily:Fonts.Bold,
         fontWeight:'600',
-        fontSize:14
+        fontSize:16,
+        color:Colors?.darkMagicBlue
     },
     add_cart_btn:{
         height:widthPercentageToDP(8),

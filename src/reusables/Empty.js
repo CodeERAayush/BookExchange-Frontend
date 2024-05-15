@@ -14,7 +14,7 @@ const Empty = () => {
       loop
       style={styles?.animation}
       />
-      <Text style={styles.empty_text}>
+      <Text allowFontScaling={false} style={styles.empty_text}>
         No Items Found
       </Text>
     </View>

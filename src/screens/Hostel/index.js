@@ -212,7 +212,7 @@ const HostelSign = ({navigation}) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{backgroundColor:'white',flex:1}}>
       <Box mx='5%' >
-        <Text fontSize={{
+        <Text allowFontScaling={false} fontSize={{
           base: "50px",
           md: "60px",
           lg: "70px"
@@ -220,7 +220,7 @@ const HostelSign = ({navigation}) => {
           // bold
           fontFamily={Fonts.Regular}
           color={Colors.Black}  letterSpacing='2xl'>GRABit</Text>
-        <Text fontSize={{
+        <Text allowFontScaling={false} fontSize={{
           base: "20px",
           md: "60px",
           lg: "70px"
@@ -251,7 +251,7 @@ const HostelSign = ({navigation}) => {
             size={35}
             color={Colors?.LightGrey}
           />
-          <Text mt={1} color={'gray.300'}>Select Profile Image</Text></>}
+          <Text allowFontScaling={false} mt={1} color={'gray.300'}>Select Profile Image</Text></>}
         </Pressable>
 
         <FormInput
@@ -262,7 +262,7 @@ const HostelSign = ({navigation}) => {
           value={formData.firstName}
         />
          <Box w={'85%'} alignSelf={'center'}>
-            <Text style={styles?.label}>Hostel Address<Text style={{color:'red'}}>*</Text></Text>
+            <Text allowFontScaling={false} style={styles?.label}>Hostel Address<Text allowFontScaling={false} style={{color:'red'}}>*</Text></Text>
             </Box>
           <TextArea
             onChangeText={(value) => setFormData({ ...formData, address: value })}
@@ -296,7 +296,7 @@ loading={loading}
                 setModalVisible(false)
                 requestCameraPermission()
               }}>
-              <Text style={styles.textStyle}>Camera</Text>
+              <Text allowFontScaling={false} style={styles.textStyle}>Camera</Text>
             </Pressable>
             <View
               style={{ backgroundColor: Colors.LightGrey, height: 2, width: '95%', alignSelf: 'center' }}
@@ -308,7 +308,7 @@ loading={loading}
                 selectFile()
               }}
             >
-              <Text style={styles.textStyle}>Gallery</Text>
+              <Text allowFontScaling={false} style={styles.textStyle}>Gallery</Text>
             </Pressable>
           </View>
         </Pressable>

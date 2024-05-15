@@ -16,7 +16,7 @@ const MakeFav = ({favou=false,item,style,iconStyle}) => {
     const favourites=useSelector(state=>state?.favourites?.items)
 
     useEffect(()=>{
-        console.log(favourites, "   ::  ", item?._id)
+        // console.log(favourites, "   ::  ", item?._id)
         let found=false;
         for(let i=0;i<favourites.length;i++){
             if (favourites[i]?._id === item?._id){

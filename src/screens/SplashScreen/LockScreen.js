@@ -99,8 +99,8 @@ export default function App() {
     () => (
       <Animated.View entering={SlideInUp} style={styles.header}>
         <Ionicons name="ios-lock-closed" size={20} color="white" />
-        <Text style={styles.date}>{date.format("dddd, DD MMMM")}</Text>
-        <Text style={styles.time}>{date.format("hh:mm")}</Text>
+        <Text allowFontScaling={false} style={styles.date}>{date.format("dddd, DD MMMM")}</Text>
+        <Text allowFontScaling={false} style={styles.time}>{date.format("hh:mm")}</Text>
       </Animated.View>
     ),
     [date]

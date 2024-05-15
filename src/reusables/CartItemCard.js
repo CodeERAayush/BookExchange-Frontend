@@ -33,8 +33,9 @@ const CartItemCard = ({item,navigation}) => {
         }
       </View>
       <View style={styles.middle_part}>
-        <Text style={styles?.title}>{item?.name}</Text>
-        <Text style={styles?.price}>Condition: {item?.condition}</Text>
+        <Text allowFontScaling={false} style={styles?.title}>{item?.name}</Text>
+        <Text allowFontScaling={false} style={[styles?.price,{color:Colors?.darkMagicBlue,letterSpacing:0.6,fontSize:14}]}>{item?.price} ₹</Text>
+        <Text allowFontScaling={false} style={styles?.price}>Condition: {item?.condition}</Text>
       </View>
       <View style={styles.right_part}>
           <CustomBtn
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
   },
   price:{
     color:Colors?.Black,
-    fontSize:14,
+    fontSize:12,
     fontFamily:Fonts?.Regular,
     fontWeight:'400',
     lineHeight:20
