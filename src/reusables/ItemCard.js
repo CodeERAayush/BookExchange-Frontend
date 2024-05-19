@@ -13,6 +13,7 @@ import FastImage from 'react-native-fast-image'
 const ItemCard = ({ item,onPressCart,naviagtion,favou }) => {
     
     return (
+        <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
         <Pressable 
         key={item?._id}
         onPress={()=>naviagtion.navigate("Product",{id:item?._id})}
@@ -59,6 +60,7 @@ const ItemCard = ({ item,onPressCart,naviagtion,favou }) => {
                 </Text>
             </View>
         </Pressable>
+        </View>
     )
 }
 
@@ -67,11 +69,12 @@ export default memo(ItemCard)
 const styles = StyleSheet.create({
     card: {
         backgroundColor: Colors?.LightGrey,
-        width: widthPercentageToDP(45),
-        marginVertical: heightPercentageToDP(1),
+        width: '98%',
+        marginVertical: 2,
         height: heightPercentageToDP(28),
-        borderRadius: widthPercentageToDP(5),
-        marginHorizontal: widthPercentageToDP(2.5)
+        borderRadius: widthPercentageToDP(1),
+        // flex:1
+        // marginHorizontal: widthPercentageToDP(2.5)
     },
     heading: {
         color: 'black',

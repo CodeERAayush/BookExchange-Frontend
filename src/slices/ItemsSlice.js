@@ -7,7 +7,8 @@ const ItemSlice = createSlice({
     hostelWiseBooks:[],
     categoryHostelWiseBooks:[],
     categoryWiseBooks:[],
-    latestBooks:[]
+    latestBooks:[],
+    myBooks:[]
   },
   reducers: {
     setAllBookData(state, action) {
@@ -25,8 +26,14 @@ const ItemSlice = createSlice({
       tempData['latestBooks']=action.payload;
       return tempData;
     },
+    addMyBook(state,action){
+      const tempData={...state};
+      tempData['myBooks']=action?.payload;
+      return tempData;
+
+    }
   }
 })
 
-export const { setAllBookData,addAllBookData,addLatestBookData } = ItemSlice.actions
+export const { setAllBookData,addAllBookData,addLatestBookData,addMyBook } = ItemSlice.actions
 export default ItemSlice.reducer

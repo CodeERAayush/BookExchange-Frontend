@@ -24,6 +24,7 @@ const Carousal = ({ images }) => {
                 horizontal
                 pagingEnabled
                 windowSize={1}
+                showsHorizontalScrollIndicator={false}
                 onViewableItemsChanged={onViewableItemsChanged}
                 renderItem={({ item, index }) => {
                 return<FastImage

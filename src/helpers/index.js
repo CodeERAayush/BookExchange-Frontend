@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Images } from '../../asset/images';
 export const setAsync = async (key,value) => {
     try {
       await AsyncStorage.setItem(key, value);
@@ -30,3 +31,11 @@ export const getAsyncJson = async (key) => {
     }
   };
 
+  export const categories=[
+    {name:'paper',image:Images?.paper},
+    {name:'book',image:Images?.book},
+    {name:'gadgets',image:Images?.gadgets},
+    {name:'clothing',image:Images?.clothing},
+    {name:'vehicle',image:Images?.vehicle},
+    {name:'other',image:Images?.other},
+  ]

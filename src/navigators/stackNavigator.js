@@ -9,6 +9,7 @@ import Splash from '../screens/SplashScreen'
 import BottomTabNavigator from './bottomNavigator'
 import Cart from '../screens/Cart'
 import ProductDetailScreen from '../screens/RenderItemScreen'
+import Category from '../screens/CategoryScreen'
 const StackNavigator = () => {
   const Stack=createStackNavigator()
     return (
@@ -20,6 +21,7 @@ const StackNavigator = () => {
         <Stack.Screen name='MyTabs' component={BottomTabNavigator}/>
         <Stack.Screen name='Cart' component={Cart}/>
         <Stack.Screen name='Product' component={ProductDetailScreen}/>
+        <Stack.Screen name='Category' component={Category}/>
     </Stack.Navigator>
   )
 }

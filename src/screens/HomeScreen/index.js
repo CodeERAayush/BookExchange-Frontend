@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View, StatusBar, FlatList, Image, RefreshControlComponent,ToastAndroid,Alert } from 'react-native'
-import React, { useCallback, useDebugValue, useEffect, useState } from 'react'
+import { StyleSheet, Text, View, StatusBar, FlatList, Image, RefreshControlComponent,ToastAndroid,Alert,Animated, Pressable } from 'react-native'
+import React, { useCallback, useDebugValue, useEffect, useState, useRef } from 'react'
 import { getAsyncJson } from '../../helpers'
 import { useDispatch, useSelector } from 'react-redux'
 import CustomBtn from '../../reusables/button'
@@ -22,11 +22,18 @@ import { Fonts } from '../../../asset/fonts'
 import { add_item } from '../../slices/CartSlice'
 import messaging from '@react-native-firebase/messaging'
 import ItemRenderCard from '../../components/cards/ItemRenderCard'
+import { categories } from '../../helpers'
+import CategoryCard from '../../components/cards/CategoryCard'
 const Home = ({navigation}) => {
   const {UserData} = useSelector(state=>state.UserData);
   const {allBooks,latestBooks} = useSelector(state=>state.Items)
   const dispatch = useDispatch();
   const [refreshing,setRefreshing]=useState(false)
+
+  // ['paper', 'book', 'gadgets', 'clothing', 'vehicle', 'other']
+
+ 
+
  const getAllBooks=(more)=>{
   setRefreshing(true)
     const params={
@@ -44,6 +51,7 @@ const Home = ({navigation}) => {
     }).catch(e=>console.log(e))
     .finally(()=>setRefreshing(false))
   }
+  const offset = useRef(new Animated.Value(0)).current;
 
   const renderItem=useCallback((item,index)=>(<ItemRenderCard
   item={item}
@@ -73,8 +81,9 @@ const Home = ({navigation}) => {
  
   },[])
 
-  const renderitem=useCallback(({item})=>(<ItemCard
+  const renderitem=useCallback(({item,index})=>(<ItemCard
   item={item}
+  key={index}
   onPressCart={(item)=>{
     dispatch(add_item(item))
     ToastAndroid.show("Item added to cart!",ToastAndroid.CENTER)
@@ -91,12 +100,19 @@ const Home = ({navigation}) => {
     {/* {console.log(UserData?.token)} */}
     <HeroSection
     navigation={navigation}
+    animValue={offset}
     />
     <FlatList
     data={allBooks}
     numColumns={2}
+    scrollEventThrottle={16}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { y: offset } } }],
+            { useNativeDriver: false }
+          )}
+          // style={{marginTop:hp(10)}}
     ListHeaderComponent={()=>
-    <View>
+    <View style={{marginTop:hp(19)}}>
     <Carousel
       loop
       width={widthPercentageToDP(100)}
@@ -113,11 +129,17 @@ const Home = ({navigation}) => {
       renderItem={({ item,index }) => (
          renderItem(item,index)
       )}/>
-      
+      <Box h={hp(6)} mb={5} flex={1} flexDirection={'row'}  justifyContent={'space-evenly'} alignItems={'center'}>
+       {categories.map((item,index)=>(<CategoryCard
+       item={item}
+      key={index}
+       onPress={(name)=>navigation.navigate('Category',{category:name})}
+       />))}
+      </Box>
       </View>
       }
       ListFooterComponent={()=><Box height={hp(10)}></Box>}
-    renderItem={renderitem}
+    renderItem={({item,index})=>renderitem({item,index})}
 refreshing={refreshing}
 onRefresh={getAllBooks}
     />

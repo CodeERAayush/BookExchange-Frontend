@@ -1,5 +1,5 @@
-import { Image, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import { Image, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View, Animated} from 'react-native'
+import React,{useRef} from 'react'
 import { Colors } from '../../constants/colors'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Fonts } from '../../../asset/fonts';
@@ -8,15 +8,41 @@ import Feather from 'react-native-vector-icons/Feather'
 import { Images } from '../../../asset/images';
 import { useSelector } from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
-const HeroSection = ({navigation}) => {
+import { SafeAreaProvider, SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+
+
+const HEADER_HEIGHT = hp(15);
+
+
+const HeroSection = ({navigation,animValue}) => {
 
     const CartItems=useSelector((state)=>state?.cart?.items)
     const {UserData}=useSelector(state=>state?.UserData);
-
+    // const offset = useRef(new Animated.Value(0)).current;
+    const insets=useSafeAreaInsets()
+    const headerHeight = animValue.interpolate({
+      inputRange: [0, HEADER_HEIGHT],
+      outputRange: [HEADER_HEIGHT, 0],
+      extrapolate: 'clamp'
+    });
   return (
+    <SafeAreaProvider>
+    <SafeAreaView style={{ flex: 1 }} forceInset={{ top: 'always' }}>
+    <Animated.View
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 10,
+        height: headerHeight,
+        // backgroundColor: 'lightblue'
+      }}
+    >
     <LinearGradient
     colors={[Colors?.magicBlue,Colors.White]}
-    style={styles.top_section}>
+    // style={{height:hp(19)}}
+    >
         <View style={styles.top_section_top}>
           <View style={styles.utilites}>
             <Text allowFontScaling={false} style={styles.greet_text}>Hey, {UserData?.user?.firstName}</Text>
@@ -55,9 +81,9 @@ const HeroSection = ({navigation}) => {
         </View>
 
       </LinearGradient>
-      // <LinearGradient colors={[Colors?.magicBlue,Colors.White]} style={styles.linearGradient}>
-      // </LinearGradient>
-      // </View>
+      </Animated.View>
+     </SafeAreaView>
+     </SafeAreaProvider>
   )
 }
 
@@ -111,7 +137,7 @@ const styles = StyleSheet.create({
       },
       search_holder:{
         backgroundColor:Colors.darkMagicBlue,
-        height:hp(7),
+        // height:hp(7),
         width:wp(90),
         alignSelf:'center',
         marginTop:hp(1),
