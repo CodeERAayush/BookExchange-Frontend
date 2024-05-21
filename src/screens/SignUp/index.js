@@ -231,7 +231,7 @@ const SignUp = ({navigation}) => {
       } else {
 
         let source = res;
-        console.log(source.assets[0])
+        // console.log(source.assets[0])
         setFormData({...formData,picturePath:source.assets[0]?.fileName})
         setImage(source.assets[0]);
         

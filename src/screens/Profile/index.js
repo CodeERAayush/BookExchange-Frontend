@@ -14,6 +14,7 @@ import { Fonts } from '../../../asset/fonts'
 import { addMyBook } from '../../slices/ItemsSlice'
 import ItemCard from '../../reusables/ItemCard'
 import { add_item } from '../../slices/CartSlice'
+import FastImage from 'react-native-fast-image'
 const Profile = ({navigation}) => {
 
 const {UserData}=useSelector(state=>state.UserData);
@@ -49,7 +50,7 @@ _getAllBooksofuser()
       dontShowBack={true}
       />
       <HStack mx={5} justifyContent={'space-between'}>
-        <Image
+        <FastImage
         source={{uri:`${API?.API_BASEURL}/assets/${UserData?.user?.picturePath}`}}
         style={{height:hp(15),width:hp(15),borderRadius:999}}
         />

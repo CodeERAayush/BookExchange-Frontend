@@ -58,6 +58,10 @@ const ItemCard = ({ item,onPressCart,naviagtion,favou }) => {
                 <Text allowFontScaling={false} style={styles.title}>
                 {item?.name?.length>15?item?.name.slice(0,15)+"...":item?.name}
                 </Text>
+                {/* {console.log(item?.hostel_details?.length>24?JSON.parse(item?.hostel_details)?.hostelName:item?.hostel_details)} */}
+                {/* <Text allowFontScaling={false} style={styles.title}>
+                {item?.name?.length>15?item?.name.slice(0,15)+"...":item?.name}
+                </Text> */}
             </View>
         </Pressable>
         </View>

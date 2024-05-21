@@ -1,6 +1,6 @@
-import { StyleSheet,ToastAndroid } from 'react-native'
+import { StyleSheet,ToastAndroid,View,FlatList } from 'react-native'
 import React, { useCallback, useEffect,useState } from 'react'
-import { Box, FlatList, StatusBar, Text } from 'native-base'
+import { Box, HStack, StatusBar, Text} from 'native-base'
 import { useRoute } from '@react-navigation/native'
 import { API } from '../../constants'
 import axios from 'axios'
@@ -11,52 +11,28 @@ import ItemCard from '../../reusables/ItemCard'
 import { add_item } from '../../slices/CartSlice'
 import Empty from '../../reusables/Empty'
 import Loader from '../../reusables/Loader'
-let lastBookId=""
-const Category = ({navigation}) => {
+import CategoryCard from '../../components/cards/CategoryCard'
+import { categories } from '../../helpers'
+import { heightPercentageToDP as hp , widthPercentageToDP as wp } from 'react-native-responsive-screen'
+let lastId="";
+const HostelWiseItems = ({navigation}) => {
     const route=useRoute();
     const dispatch = useDispatch();
     const {UserData}=useSelector(state=>state?.UserData);
-    const {category,hostel_id}=route?.params;
+    const {hostel_id,hostelName}=route?.params;
     const [data,setData]=useState([]);
-    // const [lastBookId,setLastBookId]=useState("");
+    const [lastBookId,setLastBookId]=useState("");
     const [loading,setLoading]=useState(true)
     const _getBookCategoryWise=(more)=>{
-        if(!more&&lastBookId==-1)lastBookId=""
-        if(lastBookId=== -1||(more&&!lastBookId))return;
+        if(!more&&lastId==-1) lastId="";
+        if(lastId==-1||more&&!lastId)return;
         if(more)setLoading(true)
         const params={
-            url:`${API.API_BASEURL}/${API.GET_BOOKS_CATEGORYWISE}`,
+            url:`${API.API_BASEURL}/${API.GET_BOOKS_HOSTELWISE}`,
             method:'Post',
             data:{
-                category:category,
-                lastBookId:more&&lastBookId?lastBookId:"",
-            },
-            headers: {
-                Authorization: `Bearer ${UserData?.token}`
-            }
-        }
-        // console.log(params)
-        axios(params).then(res=>{
-            const {data,success}=res.data;
-            if(success){
-                // console.log(data)
-                setData(prev=>[...prev,...data]);
-                lastBookId=data.length>0?data[data?.length-1]?._id:-1;
-            }
-        }).catch(e=>console.log(e))
-        .finally(()=>setLoading(false))
-    }
-    const _getBookCategoryAndHostelWise=(more)=>{
-        if(!more&&lastBookId==-1)lastBookId=""
-        if(lastBookId=== -1||(more&&!lastBookId))return;
-        if(more)setLoading(true)
-        const params={
-            url:`${API.API_BASEURL}/${API.GET_BY_HOSTEL_CATEGORY}`,
-            method:'Post',
-            data:{
-                category:category,
                 hostel_id:hostel_id,
-                lastBookId:more&&lastBookId?lastBookId:"",
+                lastBookId:more&&lastId?lastId:"",
             },
             headers: {
                 Authorization: `Bearer ${UserData?.token}`
@@ -67,16 +43,18 @@ const Category = ({navigation}) => {
             const {data,success}=res.data;
             if(success){
                 // console.log(data)
+                // setLastBookId(data.length>0?data[data?.length-1]?._id:-1);
+                lastId=data.length>0?data[data?.length-1]?._id:-1;
                 setData(prev=>[...prev,...data]);
-                lastBookId=data.length>0?data[data?.length-1]?._id:-1;
             }
         }).catch(e=>console.log(e))
         .finally(()=>setLoading(false))
     }
 
+
     useEffect(()=>{
-        if(hostel_id) _getBookCategoryAndHostelWise()
-            else _getBookCategoryWise()
+        // if(hostel_id) _getBookCategoryAndHostelWise()
+           _getBookCategoryWise()
     },[])
 
     const renderItem=useCallback(({item})=>{
@@ -99,26 +77,36 @@ const Category = ({navigation}) => {
         />
         <Header
         navigation={navigation}
-        heading={`${category.charAt(0).toUpperCase()+category.slice(1)} Section`}
+        heading={`Products in ${hostelName.charAt(0).toUpperCase()+hostelName.slice(1)}`}
         />
-
+<Box></Box>
         <FlatList
         data={data}
         keyExtractor={(item)=>item?._id}
         renderItem={renderItem}
         numColumns={2}
+        ListHeaderComponent={()=>(
+<HStack width={wp(95)} h={hp(5)} justifyContent={'space-evenly'} my={5} alignSelf={'center'}>
+       {categories.map((item,index)=>(<CategoryCard
+       item={item}
+      key={index}
+       onPress={(name)=>navigation.navigate('Category',{category:name,hostel_id:hostel_id})}
+       />))}
+      </HStack>
+        )}
         ListEmptyComponent={()=>loading?<Loader/>:<Empty/>}
         onEndReached={()=>{
-            if(hostel_id) _getBookCategoryAndHostelWise(true)
-                else _getBookCategoryWise(true)
+                _getBookCategoryWise(true)
         }}
-        // onEndReachedThreshold={0.5}
-        ListFooterComponent={()=>{}}
+        // onEndReachedThreshold={0.2}
+        ListFooterComponent={()=>lastBookId&&loading?<Box h={10}>
+            <Loader/>
+        </Box>:<></>}
         />
     </Box>
   )
 }
 
-export default Category
+export default HostelWiseItems
 
 const styles = StyleSheet.create({})

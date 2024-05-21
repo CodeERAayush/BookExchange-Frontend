@@ -27,13 +27,15 @@ const Fav = ({navigation}) => {
     <View style={styles?.main_screen}>
     <Header
     navigation={navigation}
+    dontShowBack={true}
+    heading={'My Favourites'}
     />
          <FlatList
           data={favourites}
           showsVerticalScrollIndicator={false}
           numColumns={2}
           renderItem={renderItem}
-          ListHeaderComponent={()=><Text allowFontScaling={false} style={styles.heading}>My Favourites</Text>}
+          // ListHeaderComponent={()=><Text allowFontScaling={false} style={styles.heading}>My Favourites</Text>}
           ListEmptyComponent={() => <Empty />}
           ListFooterComponent={()=><View style={{marginBottom:heightPercentageToDP(10)}}></View>}
         />

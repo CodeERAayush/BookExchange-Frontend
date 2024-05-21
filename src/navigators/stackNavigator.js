@@ -10,6 +10,8 @@ import BottomTabNavigator from './bottomNavigator'
 import Cart from '../screens/Cart'
 import ProductDetailScreen from '../screens/RenderItemScreen'
 import Category from '../screens/CategoryScreen'
+import HostelWiseItems from '../screens/HostelWiseItems'
+import Search from '../screens/Search'
 const StackNavigator = () => {
   const Stack=createStackNavigator()
     return (
@@ -22,6 +24,8 @@ const StackNavigator = () => {
         <Stack.Screen name='Cart' component={Cart}/>
         <Stack.Screen name='Product' component={ProductDetailScreen}/>
         <Stack.Screen name='Category' component={Category}/>
+        <Stack.Screen name='HostelWiseItems' component={HostelWiseItems}/>
+        <Stack.Screen name='Search' component={Search}/>
     </Stack.Navigator>
   )
 }

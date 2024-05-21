@@ -51,7 +51,7 @@ const HostelSign = ({navigation}) => {
         name: image.fileName
     })
     data.append(`picturePath`, formData?.picturePath)
-    console.log('pressed',data)
+    // console.log('pressed',data)
     const params = {
       url: `${API.API_BASEURL}/${API.HOSETL_REGISTRATION}`,
       method: 'post',
@@ -62,12 +62,12 @@ const HostelSign = ({navigation}) => {
       }
     }
     axios(params).then(res =>{
-      console.log(res?.data)
+      // console.log(res?.data)
       dispatch(addNewHostel(res?.data))
       showSuccess('Hostel SuccessFully Registered!')
       navigation.replace('SignUp')
     }).catch((e) => {
-      console.log(e.message)
+      // console.log(e.message)
       showError("error in registration")
     })
     .finally(()=>setLoading(false))
@@ -188,7 +188,7 @@ const HostelSign = ({navigation}) => {
       } else {
 
         let source = res;
-        console.log(source.assets[0])
+        // console.log(source.assets[0])
         setFormData({...formData,picturePath:source.assets[0]?.fileName})
         setImage(source.assets[0]);
         

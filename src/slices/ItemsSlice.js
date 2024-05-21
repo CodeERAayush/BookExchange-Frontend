@@ -18,7 +18,8 @@ const ItemSlice = createSlice({
     },
     addAllBookData(state, action) {
       const tempData={...state};
-      tempData['allBooks'].concat(action.payload);
+      // console.log("payload: ",action?.payload)
+      tempData['allBooks']=[...tempData['allBooks'],...action.payload]
       return tempData;
     },
     addLatestBookData(state, action) {
