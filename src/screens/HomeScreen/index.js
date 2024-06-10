@@ -121,11 +121,7 @@ const Home = ({navigation}) => {
    
     data={allBooks}
     numColumns={2}
-    scrollEventThrottle={16}
-          onScroll={Animated.event(
-            [{ nativeEvent: { contentOffset: { y: offset } } }],
-            { useNativeDriver: false }
-          )}
+  
           style={{marginTop:allBooks.length?hp(19):0}}
     ListHeaderComponent={()=>
     <View style={{marginTop:hp(1)}}>
@@ -158,7 +154,7 @@ const Home = ({navigation}) => {
       ListFooterComponent={()=><Box height={hp(10)}></Box>}
       ListEmptyComponent={()=><>
       <Empty/>
-      <Text style={{color:Colors?.DarkGrey,marginHorizontal:wp(10), textAlign:'center',fontFamily:Fonts?.Bold}}>Go to hostel section and search products in different hostel</Text>
+      <Text allowFontScaling={false} style={{color:Colors?.DarkGrey,marginHorizontal:wp(10), textAlign:'center',fontFamily:Fonts?.Bold}}>Go to hostel section and search products in different hostel</Text>
       </>}
     renderItem={({item,index})=>renderitem({item,index})}
 refreshing={refreshing}

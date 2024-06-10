@@ -61,6 +61,7 @@ const TabButton = (props) => {
           <Icon type={item.type} name={item.icon} color={focused ? Colors.Secondary : Colors.Black} />
         </View>
         <Animatable.Text
+        allowFontScaling={false}
           ref={textRef}
           style={styles.text}>
           {item.label}

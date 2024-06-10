@@ -151,6 +151,7 @@ const styles = StyleSheet.create({
       search_input:{
         fontFamily:Fonts.Regular,
         fontWeight:'500',
+        color:Colors?.White
       },
       sub_head:{
         fontSize:11,
