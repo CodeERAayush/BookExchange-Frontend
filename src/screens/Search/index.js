@@ -1,4 +1,4 @@
-import { Modal, StyleSheet, Text, View, TextInput, Image, FlatList, Pressable, TouchableOpacity, ToastAndroid } from 'react-native';
+import { Modal, StyleSheet, Text, View, TextInput, Image, FlatList, Pressable, ToastAndroid } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Box, StatusBar, Button, VStack, HStack, Center } from 'native-base';
 import { Colors } from '../../constants/colors';
@@ -15,15 +15,14 @@ import ItemCard from '../../reusables/ItemCard';
 import { add_item } from '../../slices/CartSlice';
 import { debounce } from 'lodash';
 import HostelSelectionModal from '../../components/modals/FilterHostelModal';
+import { setHostelList } from '../../slices/HostelList';
 
 let lastId = "";
 
 const Search = ({ navigation }) => {
-
-  // const {HostelList} = useSelector(state => state.Hostel);
-
   const [modalVisible, setModalVisible] = useState(false);
-  const [hostelModalVisible, setHostelModalVisible] = useState(false); // State for the hostel selection modal
+  const [hostelModalVisible, setHostelModalVisible] = useState(false);
+  const [categoryModalVisible, setCategoryModalVisible] = useState(false); // New state for category modal
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -33,29 +32,30 @@ const Search = ({ navigation }) => {
   const [sortVisible, setSortVisible] = useState(false);
   const [sortByDate, setSortByDate] = useState(true);
   const [selectedHostelId, setHostelId] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState(''); // New state for selected category
   const dispatch = useDispatch();
-  const [HostelList,setHostels]=useState([])
+  const [HostelList, setHostels] = useState([]);
 
-  const _getAllHostel=(more)=>{
-      const params={
-        url:`${API.API_BASEURL}/${API.GET_HOSTELS}`,
-        data:{
-          lastHostelId:more?lastId:"",
-        },
-        method:'POST'
+  const _getAllHostel = (more) => {
+    const params = {
+      url: `${API.API_BASEURL}/${API.GET_HOSTELS}`,
+      data: {
+        lastHostelId: more ? lastId : "",
+      },
+      method: 'POST'
+    }
+    axios(params).then(res => {
+      const { data, success, numberofHostels } = res.data;
+      if (success) {
+        setHostels(prev => [...prev, ...data])
       }
-      axios(params)?.then(res=>{
-        const {data,success,numberofHostels }=res.data;
-        if(success){
-          setHostels(prev=>[...prev,...data])
-        }
-      })
-      .catch(e=>console.log(e))
+    })
+      .catch(e => console.log(e))
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     _getAllHostel()
-  },[])
+  }, [])
 
   const renderitem = useCallback(({ item, index }) => (
     <ItemCard
@@ -65,7 +65,7 @@ const Search = ({ navigation }) => {
         dispatch(add_item(item));
         ToastAndroid.show("Item added to cart!", ToastAndroid.CENTER);
       }}
-      navigation={navigation}
+      naviagtion={navigation}
     />
   ), []);
 
@@ -81,6 +81,7 @@ const Search = ({ navigation }) => {
         lastBookId: more && lastId ? lastId : "",
         sortByDate: sortByDate,
         hostel_id: myHostel ? JSON.parse(UserData?.user?.hostel)?._id : selectedHostelId,
+        category: selectedCategory, // Add category to the request
       },
       method: 'Post',
       headers: {
@@ -101,7 +102,7 @@ const Search = ({ navigation }) => {
   useEffect(() => {
     console.log(HostelList)
     getAllBooks();
-  }, [myHostel, sortByDate,selectedHostelId]);
+  }, [myHostel, sortByDate, selectedHostelId, selectedCategory]); // Added selectedCategory to dependencies
 
   const debounced = debounce(getAllBooks, 500);
 
@@ -109,6 +110,8 @@ const Search = ({ navigation }) => {
     debounced();
     return () => debounced();
   }, [query]);
+
+  const categoryOptions = ["paper", "book", "gadgets", "clothing", "vehicle", "other"]; // Category options
 
   return (
     <Box flex={1} bgColor={Colors?.White}>
@@ -231,40 +234,51 @@ const Search = ({ navigation }) => {
                 >
                   Close
                 </Button>
-              </> :
-                <>
-                  <Button
-                    bg={myHostel ? Colors?.darkMagicBlue : Colors?.White}
-                    _text={{ color: myHostel ? Colors?.White : Colors?.Black, fontWeight: 'bold', fontSize: 'md' }}
-                    borderRadius={5}
-                    borderWidth={1}
-                    onPress={() => setMyHostel(prev => !prev)}
-                  >
-                    My Hostel
-                  </Button>
-                  <Button
-                     bg={selectedHostelId ? Colors?.darkMagicBlue : Colors?.White}
-                    _text={{ color: selectedHostelId ? Colors?.White:Colors?.Black, fontWeight: 'bold', fontSize: 'md' }}
-                    borderRadius={5}
-                    borderWidth={1}
-                    onPress={() => setHostelModalVisible(true)} // Open hostel selection modal
-                  >
-                    Select Other Hostel
-                  </Button>
-                  <Button
-                    bg={Colors?.White}
-                    _text={{ color: Colors?.Black, fontWeight: 'bold', fontSize: 'md' }}
-                    borderRadius={5}
-                    borderWidth={1}
-                    onPress={() => { /* Your category filter logic here */ }}
-                  >
-                    Category
-                  </Button>
-                  <HStack>
-                    <Button
+              </> : <>
+                <Button
+                  bg={myHostel ? Colors?.darkMagicBlue : Colors?.White}
+                  _text={{ color: myHostel ? Colors?.White : Colors?.Black, fontWeight: 'bold', fontSize: 'md' }}
+                  borderRadius={5}
+                  borderWidth={1}
+                  onPress={() => {
+                    setModalVisible(false);
+                    setMyHostel(prev => !prev);
+                  }}
+                >
+                  My Hostel
+                </Button>
+                <Button
+                  bg={ selectedHostelId ? Colors?.darkMagicBlue : Colors?.White}
+                  _text={{ color: selectedHostelId ? Colors?.White : Colors?.Black, fontWeight: 'bold', fontSize: 'md' }}
+                  borderRadius={5}
+                  borderWidth={1}
+                  onPress={() => {
+                    setModalVisible(false);
+                    setHostelModalVisible(true); // Open hostel selection modal
+                  }}
+                >
+                  Choose Hostel
+                </Button>
+                <Button
+                  bg={selectedCategory ? Colors?.darkMagicBlue : Colors?.White}
+                  _text={{ color: selectedCategory ? Colors?.White : Colors?.Black, fontWeight: 'bold', fontSize: 'md' }}
+                  borderRadius={5}
+                  borderWidth={1}
+                  onPress={() => {
+                    setModalVisible(false);
+                    setCategoryModalVisible(true); // Open category selection modal
+                  }}
+                >
+                  Choose Category
+                </Button>
+
+               <HStack>
+               <Button
                       onPress={() => {
-                        setMyHostel(false);
-                        setHostelId('');
+                        setMyHostel(false)
+                        setHostelId('')
+                        setSelectedCategory('')
+                        setModalVisible(false);
                       }}
                       colorScheme="cyan"
                       shadow={5}
@@ -283,58 +297,112 @@ const Search = ({ navigation }) => {
                     >
                       Close
                     </Button>
-                  </HStack>
-                </>}
+               </HStack>
+              </>}
             </VStack>
           </Box>
         </View>
       </Modal>
 
+      {/* Hostel Selection Modal */}
       <HostelSelectionModal
         visible={hostelModalVisible}
         onClose={() => setHostelModalVisible(false)}
+        hostels={HostelList}
         onSelect={(hostelId) => {
+          setMyHostel(false)
           setHostelId(hostelId);
           setHostelModalVisible(false);
-          setModalVisible(false);
-          setMyHostel(false)
         }}
-        hostels={HostelList}
       />
+
+      {/* Category Selection Modal */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={categoryModalVisible}
+        onRequestClose={() => setCategoryModalVisible(false)}
+      >
+        <View style={{ flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <Box
+            bg="white"
+            p={4}
+            borderTopRadius={20}
+            shadow={2}
+            width="100%"
+            alignSelf="center"
+          >
+            <VStack space={4}>
+              <Text style={{ fontFamily: Fonts?.Bold, fontSize: 18, color: Colors?.Black }}>
+                Select Category
+              </Text>
+              {categoryOptions.map((category, index) => (
+                <Button
+                  key={index}
+                  bg={selectedCategory === category ? Colors?.darkMagicBlue : Colors?.White}
+                  _text={{ color: selectedCategory === category ? Colors?.White : Colors?.Black, fontWeight: 'bold', fontSize: 'md' }}
+                  borderRadius={5}
+                  borderWidth={1}
+                  onPress={() => {
+                    setSelectedCategory(category);
+                    setCategoryModalVisible(false);
+                  }}
+                >
+                  {category}
+                </Button>
+              ))}
+              <Button
+                onPress={() => setCategoryModalVisible(false)}
+                colorScheme="danger"
+                borderRadius="full"
+                shadow={5}
+                px={6}
+                py={3}
+              >
+                Close
+              </Button>
+            </VStack>
+          </Box>
+        </View>
+      </Modal>
     </Box>
   );
-}
+};
 
 export default Search;
 
 const styles = StyleSheet.create({
-  search_holder_right: {
-    width: '85%',
-    justifyContent: 'center',
-    marginLeft: wp(1)
-  },
   search_holder: {
-    backgroundColor: Colors.darkMagicBlue,
     width: wp(95),
+    height: hp(6),
+    borderRadius: hp(6),
+    borderWidth: 1,
+    borderColor: Colors?.black45,
+    marginVertical: hp(1),
     alignSelf: 'center',
-    padding: 0,
-    marginTop: hp(1),
-    borderRadius: wp(2),
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   search_holder_left: {
-    width: '10%',
-    alignItems: 'flex-end',
-    justifyContent: 'center'
+    flex: 0.2,
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  search_holder_right: {
+    flex: 1,
+    justifyContent: 'center',
   },
   search_input: {
-    fontFamily: Fonts.Regular,
-    fontWeight: '500',
-    color: Colors?.White
+    width: '100%',
+    height: '100%',
+    fontFamily: Fonts?.Regular,
+    fontSize: hp(1.8),
+    color: Colors?.Black,
   },
   searchIcon: {
-    height: hp(1.5),
-    width: hp(1.5),
-    marginRight: wp(1)
+    width: wp(6),
+    height: wp(6),
+    resizeMode: 'contain',
+    tintColor:Colors?.Black
   },
 });

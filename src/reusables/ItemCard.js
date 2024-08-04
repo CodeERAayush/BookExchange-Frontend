@@ -10,8 +10,11 @@ import MakeFav from './MakeFav';
 import { API } from '../constants';
 import FastImage from 'react-native-fast-image';
 import CustomMenu from '../components/CustomMenu';
+import { HStack } from 'native-base';
 
 const ItemCard = ({ item, onPressCart, naviagtion, favou, canDelete = false,onPressDelete }) => {
+
+
   const [menuVisible, setMenuVisible] = useState(false);
 
   const handleMenuToggle = () => {
@@ -103,6 +106,18 @@ const ItemCard = ({ item, onPressCart, naviagtion, favou, canDelete = false,onPr
           <Text allowFontScaling={false} style={styles.title}>
             {item?.name?.length > 15 ? item?.name.slice(0, 15) + '...' : item?.name}
           </Text>
+
+          <HStack alignItems={'center'}>
+          <Icon
+          type={Icons?.Entypo}
+          name="location-pin"
+          size={20}
+          color={Colors?.Black}
+          />
+          <Text allowFontScaling={false} style={[styles.title,{marginHorizontal:0,color:Colors?.Black}]}>
+            {item?.hostel_details?.hostelName?item?.hostel_details?.hostelName:"--"}
+          </Text>
+          </HStack>
         </View>
       </Pressable>
       <CustomMenu visible={menuVisible} onClose={handleMenuToggle} onDelete={handleDelete} />
