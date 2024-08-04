@@ -32,9 +32,16 @@ const ItemSlice = createSlice({
       tempData['myBooks']=action?.payload;
       return tempData;
 
+    },
+    deleteBook(state, action) {
+      const bookId = action.payload;
+      const tempData = { ...state };
+      tempData['allBooks'] = tempData['allBooks'].filter(book => book._id !== bookId);
+      tempData['myBooks'] = tempData['myBooks'].filter(book => book._id !== bookId);
+      return tempData;
     }
   }
 })
 
-export const { setAllBookData,addAllBookData,addLatestBookData,addMyBook } = ItemSlice.actions
+export const { setAllBookData,addAllBookData,addLatestBookData,addMyBook,deleteBook } = ItemSlice.actions
 export default ItemSlice.reducer

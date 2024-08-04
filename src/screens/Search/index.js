@@ -1,91 +1,121 @@
-import { Modal, StyleSheet, Text, View, TextInput, Image, FlatList, Pressable, TouchableOpacity, ToastAndroid } from 'react-native'
-import React, { useCallback, useEffect, useState } from 'react'
-import { Box, StatusBar, Button, VStack, HStack, Center } from 'native-base'
-import { Colors } from '../../constants/colors'
-import { Images } from '../../../asset/images'
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import { Fonts } from '../../../asset/fonts'
-import Icon, { Icons } from '../../../asset/Icons/Icons'
-import { categories } from '../../helpers'
-import CategoryCard from '../../components/cards/CategoryCard'
-import { API } from '../../constants'
-import { useDispatch, useSelector } from 'react-redux'
-import axios from 'axios'
-import ItemCard from '../../reusables/ItemCard'
-import { add_item } from '../../slices/CartSlice'
+import { Modal, StyleSheet, Text, View, TextInput, Image, FlatList, Pressable, TouchableOpacity, ToastAndroid } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Box, StatusBar, Button, VStack, HStack, Center } from 'native-base';
+import { Colors } from '../../constants/colors';
+import { Images } from '../../../asset/images';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { Fonts } from '../../../asset/fonts';
+import Icon, { Icons } from '../../../asset/Icons/Icons';
+import { categories } from '../../helpers';
+import CategoryCard from '../../components/cards/CategoryCard';
+import { API } from '../../constants';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import ItemCard from '../../reusables/ItemCard';
+import { add_item } from '../../slices/CartSlice';
+import { debounce } from 'lodash';
+import HostelSelectionModal from '../../components/modals/FilterHostelModal';
+
 let lastId = "";
+
 const Search = ({ navigation }) => {
 
-  const HostelList=useSelector(state=>state.Hostel?.HostelList)
+  // const {HostelList} = useSelector(state => state.Hostel);
 
   const [modalVisible, setModalVisible] = useState(false);
+  const [hostelModalVisible, setHostelModalVisible] = useState(false); // State for the hostel selection modal
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false)
-  const [query, setQuery] = useState('')
-  const [myHostel, setMyHostel] = useState(false)
+  const [refreshing, setRefreshing] = useState(false);
+  const [query, setQuery] = useState('');
+  const [myHostel, setMyHostel] = useState(false);
   const { UserData } = useSelector(state => state.UserData);
   const [sortVisible, setSortVisible] = useState(false);
-  const [sortByDate, setSortByDate] = useState(true)
-  const [selectedHostelId,setHostelId]=useState('')
-  const dispatch = useDispatch()
-  const renderitem = useCallback(({ item, index }) => (<ItemCard
-    item={item}
-    key={index}
-    onPressCart={(item) => {
-      dispatch(add_item(item))
-      ToastAndroid.show("Item added to cart!", ToastAndroid.CENTER)
-    }}
-    naviagtion={navigation}
-  />), [])
+  const [sortByDate, setSortByDate] = useState(true);
+  const [selectedHostelId, setHostelId] = useState('');
+  const dispatch = useDispatch();
+  const [HostelList,setHostels]=useState([])
+
+  const _getAllHostel=(more)=>{
+      const params={
+        url:`${API.API_BASEURL}/${API.GET_HOSTELS}`,
+        data:{
+          lastHostelId:more?lastId:"",
+        },
+        method:'POST'
+      }
+      axios(params)?.then(res=>{
+        const {data,success,numberofHostels }=res.data;
+        if(success){
+          setHostels(prev=>[...prev,...data])
+        }
+      })
+      .catch(e=>console.log(e))
+  }
+
+  useEffect(()=>{
+    _getAllHostel()
+  },[])
+
+  const renderitem = useCallback(({ item, index }) => (
+    <ItemCard
+      item={item}
+      key={index}
+      onPressCart={(item) => {
+        dispatch(add_item(item));
+        ToastAndroid.show("Item added to cart!", ToastAndroid.CENTER);
+      }}
+      navigation={navigation}
+    />
+  ), []);
 
   const getAllBooks = (more) => {
+    console.log(query);
     if (lastId === -1 || (more && !lastId)) return;
-    if (more) setLoading(true)
-    else setRefreshing(true)
+    if (more) setLoading(true);
+    else setRefreshing(true);
     const params = {
       url: `${API.API_BASEURL}/${API.GET_ALL_BOOKS}`,
       data: {
         searchQuery: query,
         lastBookId: more && lastId ? lastId : "",
         sortByDate: sortByDate,
-        hostel_id:myHostel?JSON.parse(UserData?.user?.hostel)?._id:selectedHostelId,
+        hostel_id: myHostel ? JSON.parse(UserData?.user?.hostel)?._id : selectedHostelId,
       },
       method: 'Post',
       headers: {
-        Authorization: `Bearer ${UserData?.token}`
-      }
-    }
+        Authorization: `Bearer ${UserData?.token}`,
+      },
+    };
     axios(params).then(r => {
       lastId = r?.data?.data[r?.data?.data?.length - 1]?._id;
-
-      if (more) setData(prev => [...prev, ...r?.data?.data])
-      else
-        setData(r?.data?.data);
-
-
+      if (more) setData(prev => [...prev, ...r?.data?.data]);
+      else setData(r?.data?.data);
     }).catch(e => console.log(e))
       .finally(() => {
-        setLoading(false)
-        setRefreshing(false)
-      })
-  }
+        setLoading(false);
+        setRefreshing(false);
+      });
+  };
 
   useEffect(() => {
-    getAllBooks()
-  }, [query, myHostel, sortByDate])
+    console.log(HostelList)
+    getAllBooks();
+  }, [myHostel, sortByDate,selectedHostelId]);
+
+  const debounced = debounce(getAllBooks, 500);
+
+  useEffect(() => {
+    debounced();
+    return () => debounced();
+  }, [query]);
 
   return (
     <Box flex={1} bgColor={Colors?.White}>
       <StatusBar barStyle={'dark-content'} backgroundColor={Colors?.White} />
-      <Pressable
-
-        style={styles.search_holder}>
+      <Pressable style={styles.search_holder}>
         <View style={styles?.search_holder_left}>
-          <Image
-            source={Images.search_icn}
-            style={styles.searchIcon}
-          />
+          <Image source={Images.search_icn} style={styles.searchIcon} />
         </View>
         <View style={styles?.search_holder_right}>
           <TextInput
@@ -104,8 +134,8 @@ const Search = ({ navigation }) => {
           <HStack space={4} alignItems="center" mx={3} my={1} justifyContent={'center'}>
             <Button
               onPress={() => {
-                setSortVisible(true)
-                setModalVisible(true)
+                setSortVisible(true);
+                setModalVisible(true);
               }}
               bg={Colors?.White}
               _text={{ color: 'black', fontSize: 'md', fontFamily: Fonts?.Regular }}
@@ -117,8 +147,8 @@ const Search = ({ navigation }) => {
             </Button>
             <Button
               onPress={() => {
-                setSortVisible(false)
-                setModalVisible(true)
+                setSortVisible(false);
+                setModalVisible(true);
               }}
               bg={Colors?.White}
               _text={{ color: 'black', fontSize: 'md', fontFamily: Fonts?.Regular }}
@@ -144,7 +174,6 @@ const Search = ({ navigation }) => {
         onEndReachedThreshold={0.2}
         onEndReached={() => getAllBooks(true)}
         onRefresh={getAllBooks}
-
       />
 
       <Modal
@@ -172,10 +201,10 @@ const Search = ({ navigation }) => {
                   _text={{ color: sortByDate ? Colors?.White : Colors?.Black, fontWeight: 'bold', fontSize: 'md' }}
                   borderRadius={5}
                   borderWidth={1}
-
                   onPress={() => {
-                    setModalVisible(false)
-                    setSortByDate(true)}}
+                    setModalVisible(false);
+                    setSortByDate(true);
+                  }}
                 >
                   Date (Newer First)
                 </Button>
@@ -185,9 +214,9 @@ const Search = ({ navigation }) => {
                   borderRadius={5}
                   borderWidth={1}
                   onPress={() => {
-                    setModalVisible(false)
-                    setSortByDate(false)}}
-
+                    setModalVisible(false);
+                    setSortByDate(false);
+                  }}
                 >
                   Date (Older First)
                 </Button>
@@ -205,20 +234,20 @@ const Search = ({ navigation }) => {
               </> :
                 <>
                   <Button
-                    bg={myHostel?Colors?.darkMagicBlue:Colors?.White}
-                    _text={{ color: myHostel?Colors?.White:Colors?.Black, fontWeight: 'bold', fontSize: 'md' }}
+                    bg={myHostel ? Colors?.darkMagicBlue : Colors?.White}
+                    _text={{ color: myHostel ? Colors?.White : Colors?.Black, fontWeight: 'bold', fontSize: 'md' }}
                     borderRadius={5}
                     borderWidth={1}
-                    onPress={() => setMyHostel(prev=>!prev)}
+                    onPress={() => setMyHostel(prev => !prev)}
                   >
                     My Hostel
                   </Button>
                   <Button
-                    bg={Colors?.White}
-                    _text={{ color: Colors?.Black, fontWeight: 'bold', fontSize: 'md' }}
+                     bg={selectedHostelId ? Colors?.darkMagicBlue : Colors?.White}
+                    _text={{ color: selectedHostelId ? Colors?.White:Colors?.Black, fontWeight: 'bold', fontSize: 'md' }}
                     borderRadius={5}
                     borderWidth={1}
-                    onPress={() => { /* Your sort logic here */ }}
+                    onPress={() => setHostelModalVisible(true)} // Open hostel selection modal
                   >
                     Select Other Hostel
                   </Button>
@@ -227,14 +256,15 @@ const Search = ({ navigation }) => {
                     _text={{ color: Colors?.Black, fontWeight: 'bold', fontSize: 'md' }}
                     borderRadius={5}
                     borderWidth={1}
-                    onPress={() => { /* Your sort logic here */ }}
+                    onPress={() => { /* Your category filter logic here */ }}
                   >
                     Category
                   </Button>
                   <HStack>
                     <Button
                       onPress={() => {
-                        setMyHostel(false)
+                        setMyHostel(false);
+                        setHostelId('');
                       }}
                       colorScheme="cyan"
                       shadow={5}
@@ -259,11 +289,23 @@ const Search = ({ navigation }) => {
           </Box>
         </View>
       </Modal>
+
+      <HostelSelectionModal
+        visible={hostelModalVisible}
+        onClose={() => setHostelModalVisible(false)}
+        onSelect={(hostelId) => {
+          setHostelId(hostelId);
+          setHostelModalVisible(false);
+          setModalVisible(false);
+          setMyHostel(false)
+        }}
+        hostels={HostelList}
+      />
     </Box>
-  )
+  );
 }
 
-export default Search
+export default Search;
 
 const styles = StyleSheet.create({
   search_holder_right: {
@@ -273,7 +315,6 @@ const styles = StyleSheet.create({
   },
   search_holder: {
     backgroundColor: Colors.darkMagicBlue,
-    // height:hp(),
     width: wp(95),
     alignSelf: 'center',
     padding: 0,
@@ -283,7 +324,6 @@ const styles = StyleSheet.create({
   },
   search_holder_left: {
     width: '10%',
-    // height: hp(7),
     alignItems: 'flex-end',
     justifyContent: 'center'
   },
@@ -297,4 +337,4 @@ const styles = StyleSheet.create({
     width: hp(1.5),
     marginRight: wp(1)
   },
-})
+});
