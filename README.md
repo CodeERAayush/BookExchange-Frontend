@@ -1,4 +1,5 @@
 # Grabit 🛒
+https://github.com/user-attachments/assets/0664f933-2257-46fa-8e4c-5152d9e6ac93
 
 Welcome to Grabit, a React Native application designed to help students in hostels buy or exchange items with ease.
 
