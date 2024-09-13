@@ -13,7 +13,6 @@ const ItemRenderCard = ({item,navigation}) => {
     onPress={()=>navigation.navigate("Product",{id:item?._id})}
     style={{
         flex: 1,
-        // borderWidth: 1,
         backgroundColor:Colors?.White,
         borderRadius:widthPercentageToDP(2),
         justifyContent: 'center',
@@ -22,7 +21,6 @@ const ItemRenderCard = ({item,navigation}) => {
     }}
 >
   <FastImage
-  // item?.image[0]
   source={{uri:`${API.API_BASEURL}/assets/${item?.image[0]}`}}
   style={{height:'100%',width:'100%'}}
   />
